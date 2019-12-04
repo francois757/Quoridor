@@ -144,6 +144,7 @@ class Quoridor:
         if position[1] == 1 and joueur == 2:
             self.jeu["gagnant"] = self.jeu['joueurs'][1]["nom"]
         self.jeu['joueurs'][joueur - 1]["pos"] = position
+        return ['D', position]
     def état_partie(self):
         """Méthode qui retourne l'état de jeu sous forme de dictionnaire"""
         return self.jeu
@@ -155,35 +156,35 @@ class Quoridor:
                 # Si deplacement vers la gauche, murv a gauche
                 if deplacement[0] == pos2[0] - 1:
                     try:
-                        self.placer_mur(joueur, tuple(map(sum,
+                        résultat = self.placer_mur(joueur, tuple(map(sum,
                                                           zip(pos2,
                                                               (0, -1 * (2 - joueur2))))),
                                         'verticaux')
-                        return
+                        return résultat
                     # Si on ne peut pas placer de mur à cet  endroit, on deplace notre pion
                     except QuoridorError:
                         try:
-                            self.placer_mur(joueur, tuple(map(sum,
+                            résultat = self.placer_mur(joueur, tuple(map(sum,
                                                               zip(pos2,
                                                                   (0, 1 - joueur2)))), 'verticaux')
-                            return
+                            return résultat
                         except QuoridorError:
                             pos2 = deplacement
                             continue
                 # murv a droite
                 else:
                     try:
-                        self.placer_mur(joueur, tuple(map(sum,
+                        résultat = self.placer_mur(joueur, tuple(map(sum,
                                                           zip(pos2,
                                                               (1, -1 *(2 - joueur2))))),
                                         'verticaux')
-                        return
+                        return résultat
                     except QuoridorError:
                         try:
-                            self.placer_mur(joueur, tuple(map(sum,
+                            résultat = self.placer_mur(joueur, tuple(map(sum,
                                                               zip(pos2,
                                                                   (1, 1 - joueur2)))), 'verticaux')
-                            return
+                            return résultat
                         except QuoridorError:
                             pos2 = deplacement
                             continue
@@ -192,23 +193,24 @@ class Quoridor:
                 # Mur h devant le joueur si deplacement vers  l'objectif
                 if deplacement[1] == pos2[1] + 1:
                     try:
-                        self.placer_mur(joueur, tuple(map(sum,
+                        résultat = self.placer_mur(joueur, tuple(map(sum,
                                                           zip(pos2,
                                                               (0, joueur - 1)))), 'horizontaux')
-                        return
+                        return résultat
                     # Si on ne peut pas placer de mur à cet  endroit, on deplace notre pion
                     except QuoridorError:
                         try:
-                            self.placer_mur(joueur, tuple(map(sum,
+                            résultat = self.placer_mur(joueur, tuple(map(sum,
                                                               zip(pos2,
                                                                   (-1, joueur - 1)))),
                                             'horizontaux')
-                            return
+                            return résultat
                         except QuoridorError:
                             pos2 = deplacement
                             continue
         # Si on ne peut pas placer de mur, on deplace le jeton
-        self.déplacer_jeton(joueur, nx.shortest_path(graphe, pos1, f'B{joueur}')[1])
+        résultat = self.déplacer_jeton(joueur, nx.shortest_path(graphe, pos1, f'B{joueur}')[1])
+        return résultat
     def jouer_coup(self, joueur):
         """Méthode qui joue un coup automatique"""
         # Le numero du joueur est autre que 1 ou 2.
@@ -231,12 +233,13 @@ class Quoridor:
         if (len(nx.shortest_path(graphe, pos1, f'B{joueur}'))
                 <= len(nx.shortest_path(graphe, pos2, f'B{joueur2}'))):
             try:
-                self.déplacer_jeton(joueur, nx.shortest_path(graphe, pos1, f'B{joueur}')[1])
-                return
+                résultat = self.déplacer_jeton(joueur, nx.shortest_path(graphe, pos1, f'B{joueur}')[1])
+                return résultat
             except QuoridorError:
                 raise QuoridorError('La partie est déjà terminée')
         # Si plus loin
-        self.final_jouer_coup(joueur, joueur2, graphe, pos1, pos2)
+        résultat = self.final_jouer_coup(joueur, joueur2, graphe, pos1, pos2)
+        return résultat
     def partie_terminée(self):
         """Méthode qui vérifie si la partie est terminé"""
         if 'gagnant' in self.jeu:
@@ -276,10 +279,12 @@ class Quoridor:
             raise QuoridorError('le joueur a déjà placé tous ses murs')
         #Vérifie que la position est valide
         if orientation == 'horizontaux':
+            communication = 'MH'
             auorien = 'verticaux'
             if position[0] < 1 or position[0] > 8 or position[1] < 2 or position[1] > 9:
                 raise QuoridorError('la position est invalide pour cette orientation')
         if orientation == 'verticaux':
+            communication = 'MV'
             auorien = 'horizontaux'
             if position[0] < 2 or position[0] > 9 or position[1] < 1 or position[1] > 8:
                 raise QuoridorError('la position est invalide pour cette orientation')
@@ -296,6 +301,7 @@ class Quoridor:
             if not nx.has_path(graphe, tuple(joueur['pos']), f'B{i+1}'):
                 self.jeu['murs'][orientation].pop()
                 raise QuoridorError('La position du mur est invalide')
+        return [communication, position]
 def création_dictionnaire_joueur(joueurs, joueur, jeu):
     """Création des joueurs pour le dictionnaire de jeu et vérification
     du gagnant."""

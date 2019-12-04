@@ -11,8 +11,6 @@ def lister_parties(idul):
         dic = rep.json()
     if 'message' in dic:
         raise RuntimeError(dic['message'])
-    else:
-        raise RuntimeError(rep)
     return dic['parties']
 
 def débuter_partie(idul):
@@ -22,8 +20,6 @@ def débuter_partie(idul):
         dic = rep.json()
     if 'message' in dic:
         raise RuntimeError(dic['message'])
-    else:
-        raise RuntimeError(dic)
     return (dic['id'], dic['état'])
 
 def jouer_coup(id_partie, type_coup, position):
@@ -32,11 +28,12 @@ def jouer_coup(id_partie, type_coup, position):
     rep = requests.post(URL_BASE+'jouer/',
                         data={'id': id_partie, 'type': type_coup, 'pos': position})
     if rep.status_code == 200:
-        dic = rep.json()
-        if 'gagnant' in dic:
-            raise StopIteration(dic['gagnant'])
-        return dic['état']
-    if 'message' in dic:
-        raise RuntimeError(dic['message'])
-    else:
-        raise RuntimeError(rep)
+        try:
+            dic = rep.json()
+            if 'message' in dic:
+                raise RuntimeError(dic['message'])
+            if 'gagnant' in dic:
+                raise StopIteration(dic['gagnant'])
+            return dic['état']
+        except RuntimeError:
+            return dic['message']

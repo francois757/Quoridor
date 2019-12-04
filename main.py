@@ -1,4 +1,4 @@
-'''Module principal'''
+"""Module principal"""
 import argparse
 
 
@@ -77,11 +77,27 @@ def afficher_damier_ascii(jeu):
 
 if __name__ == "__main__":
     DIC = (vars(analyser_commande()))
-    print(DIC)
-    k = DIC['idul']
-    IDUL = (k[0])
+    IDUL = DIC['idul']
 if DIC['lister'] is True:
     print(api.lister_parties(IDUL))
+if DIC['a'] is True:
+    PARTIE = api.débuter_partie(IDUL)
+    JEU = PARTIE[1]
+    JEUQUORIDOR = quoridorx.quoridor.Quoridor(JEU['joueurs'], JEU['murs'])
+    print(JEUQUORIDOR)
+    coup = JEUQUORIDOR.jouer_coup(1)
+    while not quoridorx.quoridor.Quoridor.partie_terminée(JEUQUORIDOR):
+        TYPE_COUP = coup[0]
+        POS = coup[1]
+        NETAT = api.jouer_coup(PARTIE[0], TYPE_COUP, POS)
+        JEU = NETAT
+        JEUQUORIDOR = quoridorx.quoridor.Quoridor(JEU['joueurs'], JEU['murs'])
+        print(JEUQUORIDOR)
+        coup = JEUQUORIDOR.jouer_coup(1)
+if DIC['x'] is True:
+    pass
+if DIC['ax'] is True:
+    pass
 else:
     PARTIE = api.débuter_partie(IDUL)
     JEU = PARTIE[1]
