@@ -80,13 +80,13 @@ if __name__ == "__main__":
     IDUL = DIC['idul']
 if DIC['lister'] is True:
     print(api.lister_parties(IDUL))
-if DIC['a'] is True:
+elif DIC['a'] is True:
     PARTIE = api.débuter_partie(IDUL)
     JEU = PARTIE[1]
     JEUQUORIDOR = quoridorx.quoridor.Quoridor(JEU['joueurs'], JEU['murs'])
     print(JEUQUORIDOR)
     coup = JEUQUORIDOR.jouer_coup(1)
-    while not quoridorx.quoridor.Quoridor.partie_terminée(JEUQUORIDOR):
+    while 1:
         TYPE_COUP = coup[0]
         POS = coup[1]
         NETAT = api.jouer_coup(PARTIE[0], TYPE_COUP, POS)
@@ -94,9 +94,9 @@ if DIC['a'] is True:
         JEUQUORIDOR = quoridorx.quoridor.Quoridor(JEU['joueurs'], JEU['murs'])
         print(JEUQUORIDOR)
         coup = JEUQUORIDOR.jouer_coup(1)
-if DIC['x'] is True:
+elif DIC['x'] is True:
     pass
-if DIC['ax'] is True:
+elif DIC['ax'] is True:
     pass
 else:
     PARTIE = api.débuter_partie(IDUL)
