@@ -191,7 +191,8 @@ class Quoridor:
             # Si shortest path est en y = murh
             if deplacement[0] == pos2[0]:
                 # Mur h devant le joueur si deplacement vers  l'objectif
-                if deplacement[1] == pos2[1] + 1:
+                if deplacement[1] + 1 == pos2[1]:
+                    ####################################################################################if deplacement[1] == pos2[1] + 1:
                     try:
                         résultat = self.placer_mur(joueur, tuple(map(sum,
                                                           zip(pos2,

@@ -78,9 +78,9 @@ def afficher_damier_ascii(jeu):
 if __name__ == "__main__":
     DIC = (vars(analyser_commande()))
     IDUL = DIC['idul']
-if DIC['lister'] is True:
+if DIC['lister']:
     print(api.lister_parties(IDUL))
-elif DIC['a'] is True:
+elif DIC['a']:
     PARTIE = api.débuter_partie(IDUL)
     JEU = PARTIE[1]
     JEUQUORIDOR = quoridorx.quoridor.Quoridor(JEU['joueurs'], JEU['murs'])
@@ -94,9 +94,9 @@ elif DIC['a'] is True:
         JEUQUORIDOR = quoridorx.quoridor.Quoridor(JEU['joueurs'], JEU['murs'])
         print(JEUQUORIDOR)
         coup = JEUQUORIDOR.jouer_coup(1)
-elif DIC['x'] is True:
+elif DIC['x']:
     pass
-elif DIC['ax'] is True:
+elif DIC['ax']:
     pass
 else:
     PARTIE = api.débuter_partie(IDUL)
