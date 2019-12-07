@@ -21,9 +21,9 @@ class Quoridorx(quoridor.Quoridor):
         self.joueur2 = turtle.Turtle()
         self.joueur2.shape("circle")
         self.joueur2.penup()
-        self.dessin = turtle.Turtle()
-        self.dessin.speed(100)
-        self.dessin.hideturtle()
+        self.dessins = turtle.Turtle()
+        self.dessins.speed(100)
+        self.dessins.hideturtle()
         Quoridorx.dessin(self, (-225, -225), (-225, 225))
         Quoridorx.dessin(self, (-225, 225), (225, 225))
         Quoridorx.dessin(self, (225, 225), (225, -225))
@@ -35,44 +35,44 @@ class Quoridorx(quoridor.Quoridor):
 
     def afficher(self):
         # placement joueurs
-        self.joueur1.goto(Quoridorx.scalingj(self.jeu['joueurs'][0]["pos"]))
-        self.joueur2.goto(Quoridorx.scalingj(self.jeu['joueurs'][1]["pos"]))
+        self.joueur1.goto(Quoridorx.scalingj(self, self.jeu['joueurs'][0]["pos"]))
+        self.joueur2.goto(Quoridorx.scalingj(self, self.jeu['joueurs'][1]["pos"]))
         # mur vertical
-        self.dessin.pencolor("red")
-        self.dessin.pensize(5)
-        self.dessin.seth(90)
+        self.dessins.pencolor("red")
+        self.dessins.pensize(5)
+        self.dessins.seth(90)
         for x in self.jeu["murs"]["verticaux"]:
-            self.dessin.penup()
-            self.dessin.goto(Quoridorx.scalingm(x))
-            self.dessin.pendown()
-            self.dessin.forward(100)
+            self.dessins.penup()
+            self.dessins.goto(Quoridorx.scalingm(self, x))
+            self.dessins.pendown()
+            self.dessins.forward(100)
         # mur horizontal
-        self.dessin.seth(0)
+        self.dessins.seth(0)
         for x in self.jeu["murs"]["horizontaux"]:
-            self.dessin.penup()
-            self.dessin.goto(Quoridorx.scalingm(x))
-            self.dessin.pendown()
-            self.dessin.forward(100)
+            self.dessins.penup()
+            self.dessins.goto(Quoridorx.scalingm(self, x))
+            self.dessins.pendown()
+            self.dessins.forward(100)
         
 
     def dessin(self, depart, arrive):
-        self.dessin.penup()
-        self.dessin.goto(depart)
-        self.dessin.pendown()
-        self.dessin.goto(arrive)
+        self.dessins.penup()
+        self.dessins.goto(depart)
+        self.dessins.pendown()
+        self.dessins.goto(arrive)
     
-    def scalingj(pos):
+    def scalingj(self, pos):
         a = ()
         for x in pos:
             a += (x * 50 - 250 ,)
         return a
     
-    def scalingm(pos):
+    def scalingm(self, pos):
         a = ()
         for x in pos:
             a += (x * 50 - 275 ,)
         return a
 
-TEST1 = Quoridorx([{'nom': 'nom1', 'murs': 10, 'pos': (5, 1)}, {'nom': 'nom2', 'murs': 8, 'pos': (5, 9)}], {'horizontaux': [[4,4]],'verticaux': [[4,4]]})
-TEST1.afficher()
-turtle.mainloop()
+#TEST1 = Quoridorx([{'nom': 'nom1', 'murs': 10, 'pos': (5, 1)}, {'nom': 'nom2', 'murs': 8, 'pos': (5, 9)}], {'horizontaux': [[4,4]],'verticaux': [[4,4]]})
+#TEST1.afficher()
+#turtle.mainloop()

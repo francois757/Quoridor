@@ -95,9 +95,30 @@ elif DIC['a']:
         print(JEUQUORIDOR)
         coup = JEUQUORIDOR.jouer_coup(1)
 elif DIC['x']:
-    pass
+    PARTIE = api.débuter_partie(IDUL)
+    JEU = PARTIE[1]
+    JEUQUORIDOR = quoridorx.Quoridorx(JEU['joueurs'], JEU['murs'])
+    JEUQUORIDOR.afficher()
+    while 1:
+        TYPE_COUP = input('Type coup')
+        POS = input('position')
+        NETAT = api.jouer_coup(PARTIE[0], TYPE_COUP, POS)
+        JEU = NETAT
+        JEUQUORIDOR = quoridorx.Quoridorx(JEU['joueurs'], JEU['murs'])
 elif DIC['ax']:
-    pass
+    PARTIE = api.débuter_partie(IDUL)
+    JEU = PARTIE[1]
+    JEUQUORIDOR = quoridorx.Quoridorx(JEU['joueurs'], JEU['murs'])
+    JEUQUORIDOR.afficher()
+    coup = JEUQUORIDOR.jouer_coup(1)
+    while 1:
+        TYPE_COUP = coup[0]
+        POS = coup[1]
+        NETAT = api.jouer_coup(PARTIE[0], TYPE_COUP, POS)
+        JEU = NETAT
+        JEUQUORIDOR = quoridorx.Quoridorx(JEU['joueurs'], JEU['murs'])
+        JEUQUORIDOR.afficher()
+        coup = JEUQUORIDOR.jouer_coup(1)
 else:
     PARTIE = api.débuter_partie(IDUL)
     JEU = PARTIE[1]

@@ -110,9 +110,9 @@ class Quoridor:
             for mhp in muh:
                 if (mh[1] == mhp[1] and (mh[0] == mhp[0] or mh[0] == mhp[0] + 1)):
                     raise QuoridorError('Position de murs invalide')
-            for murv in mur['verticaux']:
-                if mh[0] == murv[0] - 1 and mh[1] == murv[1] + 1:
-                    raise QuoridorError('un mur occupe déjà cette position')
+            #for murv in mur['verticaux']:
+                #if mh[0] == murv[0] - 1 and mh[1] == murv[1] + 1:
+                    #raise QuoridorError('un mur occupe déjà cette position')
         for index4, mv in enumerate(mur['verticaux']):
             if mv[0] not in range(2, 10) or mv[1] not in range(1, 9):
                 raise QuoridorError('Position de murs invalide')
@@ -121,9 +121,9 @@ class Quoridor:
             for mvp in muv:
                 if (mv[0] == mvp[0] and (mv[1] == mvp[1] or mv[1] == mvp[1] + 1)):
                     raise QuoridorError('Position de murs invalide')
-            for murh in mur['horizontaux']:
-                if murh[0] == mv[0] + 1 and murh[1] == mv[1] - 1:
-                    raise QuoridorError('un mur occupe déjà cette position')
+            #for murh in mur['horizontaux']:
+                #if murh[0] == mv[0] + 1 and murh[1] == mv[1] - 1:
+                    #raise QuoridorError('un mur occupe déjà cette position')
     def déplacer_jeton(self, joueur, position):
         """Méthode qui déplace le jeton"""
         # Le numero du joueur est autre que 1 ou 2.
@@ -191,8 +191,7 @@ class Quoridor:
             # Si shortest path est en y = murh
             if deplacement[0] == pos2[0]:
                 # Mur h devant le joueur si deplacement vers  l'objectif
-                if deplacement[1] + 1 == pos2[1]:
-                    ####################################################################################if deplacement[1] == pos2[1] + 1:
+                if deplacement[1] == pos2[1] + 1:
                     try:
                         résultat = self.placer_mur(joueur, tuple(map(sum,
                                                           zip(pos2,
