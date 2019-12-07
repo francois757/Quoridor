@@ -10,14 +10,16 @@ class Quoridorx(quoridor.Quoridor):
     """Classe qui sert à jouer en mode graphique"""
     def __init__(self, joueurs, murs=None):
         super().__init__(joueurs, murs)
-        print(self.jeu['joueurs'][0])
         wn = turtle.Screen()
-        wn.title("Quoridorx")
+        wn.title(f"Quoridorx - Rouge: {self.nom[0]}   Noir: {self.nom[1]}")
         wn.setup(width=500, height=500)
         wn.bgcolor("white")
         self.joueur1 = turtle.Turtle()
+        self.joueur1.shape("circle")
+        self.joueur1.color("red")
         self.joueur1.penup()
         self.joueur2 = turtle.Turtle()
+        self.joueur2.shape("circle")
         self.joueur2.penup()
         self.dessin = turtle.Turtle()
         self.dessin.speed(100)
@@ -30,8 +32,6 @@ class Quoridorx(quoridor.Quoridor):
             Quoridorx.dessin(self, (-225, 225 - x*50), (225, 225 - x*50))
         for x in range(1, 9):
             Quoridorx.dessin(self, (225 - x*50, -225), (225 - x*50, 225))
-        Quoridorx.afficher(self)
-        Quoridorx.afficher(self)
 
     def afficher(self):
         # placement joueurs
@@ -72,11 +72,7 @@ class Quoridorx(quoridor.Quoridor):
         for x in pos:
             a += (x * 50 - 275 ,)
         return a
-    
 
-
-
-
-TEST1 = Quoridorx([{'nom': 'nom1', 'murs': 10, 'pos': (5, 6)}, {'nom': 'nom2', 'murs': 8, 'pos': (5, 7)}], {'horizontaux': [[4,4]],'verticaux': [[4,4]]})
-
+TEST1 = Quoridorx([{'nom': 'nom1', 'murs': 10, 'pos': (5, 1)}, {'nom': 'nom2', 'murs': 8, 'pos': (5, 9)}], {'horizontaux': [[4,4]],'verticaux': [[4,4]]})
+TEST1.afficher()
 turtle.mainloop()
