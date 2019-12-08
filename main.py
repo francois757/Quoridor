@@ -100,11 +100,20 @@ elif DIC['x']:
     JEUQUORIDOR = quoridorx.Quoridorx(JEU['joueurs'], JEU['murs'])
     JEUQUORIDOR.afficher()
     while 1:
-        TYPE_COUP = input('Type coup')
-        POS = input('position')
-        NETAT = api.jouer_coup(PARTIE[0], TYPE_COUP, POS)
-        JEU = NETAT
-        JEUQUORIDOR = quoridorx.Quoridorx(JEU['joueurs'], JEU['murs'])
+        try:
+            TYPE_COUP = input('Type coup')
+            POS = input('position')
+            NETAT = api.jouer_coup(PARTIE[0], TYPE_COUP, POS)
+            if 'joueurs' in NETAT:
+                JEU = NETAT
+                quoridorx.turtle.Screen().reset()
+                JEUQUORIDOR = quoridorx.Quoridorx(JEU['joueurs'], JEU['murs'])
+                JEUQUORIDOR.afficher()
+            else:
+                print(NETAT)
+        except StopIteration:
+            print(JEUQUORIDOR.partie_terminée())
+            quoridorx.turtle.Screen().mainloop()
 elif DIC['ax']:
     PARTIE = api.débuter_partie(IDUL)
     JEU = PARTIE[1]
@@ -112,13 +121,18 @@ elif DIC['ax']:
     JEUQUORIDOR.afficher()
     coup = JEUQUORIDOR.jouer_coup(1)
     while 1:
-        TYPE_COUP = coup[0]
-        POS = coup[1]
-        NETAT = api.jouer_coup(PARTIE[0], TYPE_COUP, POS)
-        JEU = NETAT
-        JEUQUORIDOR = quoridorx.Quoridorx(JEU['joueurs'], JEU['murs'])
-        JEUQUORIDOR.afficher()
-        coup = JEUQUORIDOR.jouer_coup(1)
+        try:
+            TYPE_COUP = coup[0]
+            POS = coup[1]
+            NETAT = api.jouer_coup(PARTIE[0], TYPE_COUP, POS)
+            quoridorx.turtle.Screen().clear()
+            JEU = NETAT
+            JEUQUORIDOR = quoridorx.Quoridorx(JEU['joueurs'], JEU['murs'])
+            JEUQUORIDOR.afficher()
+            coup = JEUQUORIDOR.jouer_coup(1)
+        except StopIteration:
+            print(JEUQUORIDOR.partie_terminée())
+            quoridorx.turtle.Screen().mainloop()
 else:
     PARTIE = api.débuter_partie(IDUL)
     JEU = PARTIE[1]

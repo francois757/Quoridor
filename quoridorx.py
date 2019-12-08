@@ -75,4 +75,4 @@ class Quoridorx(quoridor.Quoridor):
 
 #TEST1 = Quoridorx([{'nom': 'nom1', 'murs': 10, 'pos': (5, 1)}, {'nom': 'nom2', 'murs': 8, 'pos': (5, 9)}], {'horizontaux': [[4,4]],'verticaux': [[4,4]]})
 #TEST1.afficher()
-#turtle.mainloop()
+#turtle.Screen().mainloop()
