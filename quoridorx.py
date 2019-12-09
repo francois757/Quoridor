@@ -23,7 +23,7 @@ class Quoridorx(quoridor.Quoridor):
         self.joueur2.penup()
         self.dessins = turtle.Turtle()
         self.dessins.hideturtle()
-        self.dessins.speed(1000)
+        self.dessins.speed(100)
         Quoridorx.dessin(self, (-225, -225), (-225, 225))
         Quoridorx.dessin(self, (-225, 225), (225, 225))
         Quoridorx.dessin(self, (225, 225), (225, -225))
@@ -32,6 +32,7 @@ class Quoridorx(quoridor.Quoridor):
             Quoridorx.dessin(self, (-225, 225 - x*50), (225, 225 - x*50))
         for x in range(1, 9):
             Quoridorx.dessin(self, (225 - x*50, -225), (225 - x*50, 225))
+        self.afficher()
     def afficher(self):
         # placement joueurs
         self.joueur1.goto(Quoridorx.scalingj(self, self.jeu['joueurs'][0]["pos"]))

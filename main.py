@@ -135,7 +135,6 @@ elif DIC['ax']:
             quoridorx.turtle.Screen().clear()
             JEU = NETAT
             JEUQUORIDOR = quoridorx.Quoridorx(JEU['joueurs'], JEU['murs'])
-            JEUQUORIDOR.afficher()
             coup = JEUQUORIDOR.jouer_coup(1)
         except StopIteration:
             if not JEUQUORIDOR.partie_terminée():
