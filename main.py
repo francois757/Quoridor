@@ -8,6 +8,9 @@ import api
 import quoridorx
 
 
+import time
+
+
 def analyser_commande():
     """Fonction qui va analyser les commandes entrées dans le terminal"""
     parser = argparse.ArgumentParser(description='Jeu Quoridor - phase 1')
@@ -112,8 +115,12 @@ elif DIC['x']:
             else:
                 print(NETAT)
         except StopIteration:
-            print(JEUQUORIDOR.partie_terminée())
-            quoridorx.turtle.Screen().mainloop()
+            if not JEUQUORIDOR.partie_terminée():
+                print(JEU['joueurs'][1]['nom'])
+            else:
+                print(JEUQUORIDOR.partie_terminée())
+            time.sleep(10)
+            break
 elif DIC['ax']:
     PARTIE = api.débuter_partie(IDUL)
     JEU = PARTIE[1]
@@ -131,8 +138,12 @@ elif DIC['ax']:
             JEUQUORIDOR.afficher()
             coup = JEUQUORIDOR.jouer_coup(1)
         except StopIteration:
-            print(JEUQUORIDOR.partie_terminée())
-            quoridorx.turtle.Screen().mainloop()
+            if not JEUQUORIDOR.partie_terminée():
+                print(JEU['joueurs'][1]['nom'])
+            else:
+                print(JEUQUORIDOR.partie_terminée())
+            time.sleep(10)
+            break
 else:
     PARTIE = api.débuter_partie(IDUL)
     JEU = PARTIE[1]
