@@ -169,22 +169,13 @@ class Quoridor:
                         return résultat
                     except QuoridorError:
                         pass
-
-            else:
+            else: 
                 try:
                     résultat = self.placer_mur(joueur, tuple(map(sum,
                                                         zip(pos2,
-                                                            (1, -1 * (2 - joueur2))))),
-                                    'verticaux')
+                                                            (0, joueur - 1)))), 'horizontaux')
                     return résultat
-                # Si on ne peut pas placer de mur à cet  endroit, on deplace notre pion
                 except QuoridorError:
-                    try:
-                        résultat = self.placer_mur(joueur, tuple(map(sum,
-                                                            zip(pos2,
-                                                                (1, 1 - joueur2)))), 'verticaux')
-                        return résultat
-                    except QuoridorError:
                         pass
         # Si shortest path est en y = murh
         if nx.shortest_path(graphe, pos2, f'B{joueur2}')[1][0] == pos2[0]:
@@ -193,14 +184,14 @@ class Quoridor:
                 try:
                     résultat = self.placer_mur(joueur, tuple(map(sum,
                                                         zip(pos2,
-                                                            (0, joueur - 1)))), 'horizontaux')
+                                                            (-1, joueur - 1)))), 'horizontaux')
                     return résultat
                 # mur h a gauche
                 except QuoridorError:
                     try:
                         résultat = self.placer_mur(joueur, tuple(map(sum,
                                                             zip(pos2,
-                                                                (-1, joueur - 1)))),
+                                                                (0, joueur - 1)))),
                                         'horizontaux')
                         return résultat
                     except QuoridorError:
@@ -314,47 +305,79 @@ def création_dictionnaire_joueur(joueurs, joueur, jeu):
             if jou['pos'][1] == 1 and index5 == 1:
                 jeu["gagnant"] = jou["nom"]
 def construire_graphe(joueurs, murs_horizontaux, murs_verticaux):
-    """Crée le graphe des déplacements admissibles pour les joueurs."""
+    """
+    Crée le graphe des déplacements admissibles pour les joueurs.
+
+    :param joueurs: une liste des positions (x,y) des joueurs.
+    :param murs_horizontaux: une liste des positions (x,y) des murs horizontaux.
+    :param murs_verticaux: une liste des positions (x,y) des murs verticaux.
+    :returns: le graphe bidirectionnel (en networkX) des déplacements admissibles.
+    """
     graphe = nx.DiGraph()
+
     # pour chaque colonne du damier
     for x in range(1, 10):
         # pour chaque ligne du damier
         for y in range(1, 10):
             # ajouter les arcs de tous les déplacements possibles pour cette tuile
-            ajout_arcs(graphe, x, y)
+            if x > 1:
+                graphe.add_edge((x, y), (x-1, y))
+            if x < 9:
+                graphe.add_edge((x, y), (x+1, y))
+            if y > 1:
+                graphe.add_edge((x, y), (x, y-1))
+            if y < 9:
+                graphe.add_edge((x, y), (x, y+1))
+
     # retirer tous les arcs qui croisent les murs horizontaux
     for x, y in murs_horizontaux:
         graphe.remove_edge((x, y-1), (x, y))
         graphe.remove_edge((x, y), (x, y-1))
         graphe.remove_edge((x+1, y-1), (x+1, y))
         graphe.remove_edge((x+1, y), (x+1, y-1))
+
     # retirer tous les arcs qui croisent les murs verticaux
     for x, y in murs_verticaux:
         graphe.remove_edge((x-1, y), (x, y))
         graphe.remove_edge((x, y), (x-1, y))
         graphe.remove_edge((x-1, y+1), (x, y+1))
         graphe.remove_edge((x, y+1), (x-1, y+1))
-    # retirer tous les arcs qui pointent vers les positions des joueurs
-    # et ajouter les sauts en ligne droite ou en diagonale, selon le cas
-    for joueur in map(tuple, joueurs):
-        for prédécesseur in list(graphe.predecessors(joueur)):
-            graphe.remove_edge(prédécesseur, joueur)
-            # si admissible, ajouter un lien sauteur
-            successeur = (2*joueur[0]-prédécesseur[0], 2*joueur[1]-prédécesseur[1])
-            if successeur in graphe.successors(joueur) and successeur not in joueurs:
-                # ajouter un saut en ligne droite
-                graphe.add_edge(prédécesseur, successeur)
+
+    # s'assurer que les positions des joueurs sont bien des tuples (et non des listes)
+    j1, j2 = tuple(joueurs[0]), tuple(joueurs[1])
+
+    # traiter le cas des joueurs adjacents
+    if j2 in graphe.successors(j1) or j1 in graphe.successors(j2):
+
+        # retirer les liens entre les joueurs
+        graphe.remove_edge(j1, j2)
+        graphe.remove_edge(j2, j1)
+
+        def ajouter_lien_sauteur(noeud, voisin):
+            """
+            :param noeud: noeud de départ du lien.
+            :param voisin: voisin par dessus lequel il faut sauter.
+            """
+            saut = 2*voisin[0]-noeud[0], 2*voisin[1]-noeud[1]
+
+            if saut in graphe.successors(voisin):
+                # ajouter le saut en ligne droite
+                graphe.add_edge(noeud, saut)
+
             else:
-                # ajouter les liens en diagonal
-                for successeur in list(graphe.successors(joueur)):
-                    if prédécesseur != successeur and successeur not in joueurs:
-                        graphe.add_edge(prédécesseur, successeur)
-    # ajouter les noeuds objectifs des deux joueurs
+                # ajouter les sauts en diagonale
+                for saut in graphe.successors(voisin):
+                    graphe.add_edge(noeud, saut)
+
+        ajouter_lien_sauteur(j1, j2)
+        ajouter_lien_sauteur(j2, j1)
+
+    # ajouter les destinations finales des joueurs
     for x in range(1, 10):
         graphe.add_edge((x, 9), 'B1')
         graphe.add_edge((x, 1), 'B2')
-    return graphe
 
+    return graphe
 def ajout_arcs(graphe, x, y):
     """Ajoute les arcs de tous les déplacements possibles pour une tuile"""
     if x > 1:
