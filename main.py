@@ -8,6 +8,9 @@ import api
 import quoridorx
 
 
+import time
+
+
 def analyser_commande():
     """Fonction qui va analyser les commandes entrées dans le terminal"""
     parser = argparse.ArgumentParser(description='Jeu Quoridor - phase 1')
@@ -95,9 +98,52 @@ elif DIC['a']:
         print(JEUQUORIDOR)
         coup = JEUQUORIDOR.jouer_coup(1)
 elif DIC['x']:
-    pass
+    PARTIE = api.débuter_partie(IDUL)
+    JEU = PARTIE[1]
+    JEUQUORIDOR = quoridorx.Quoridorx(JEU['joueurs'], JEU['murs'])
+    JEUQUORIDOR.afficher()
+    while 1:
+        try:
+            TYPE_COUP = input('Type coup')
+            POS = input('position')
+            NETAT = api.jouer_coup(PARTIE[0], TYPE_COUP, POS)
+            if 'joueurs' in NETAT:
+                JEU = NETAT
+                quoridorx.turtle.Screen().reset()
+                JEUQUORIDOR = quoridorx.Quoridorx(JEU['joueurs'], JEU['murs'])
+                JEUQUORIDOR.afficher()
+            else:
+                print(NETAT)
+        except StopIteration:
+            if not JEUQUORIDOR.partie_terminée():
+                print(JEU['joueurs'][1]['nom'])
+            else:
+                print(JEUQUORIDOR.partie_terminée())
+            time.sleep(10)
+            break
 elif DIC['ax']:
-    pass
+    PARTIE = api.débuter_partie(IDUL)
+    JEU = PARTIE[1]
+    JEUQUORIDOR = quoridorx.Quoridorx(JEU['joueurs'], JEU['murs'])
+    JEUQUORIDOR.afficher()
+    coup = JEUQUORIDOR.jouer_coup(1)
+    while 1:
+        try:
+            TYPE_COUP = coup[0]
+            POS = coup[1]
+            NETAT = api.jouer_coup(PARTIE[0], TYPE_COUP, POS)
+            quoridorx.turtle.Screen().clear()
+            JEU = NETAT
+            JEUQUORIDOR = quoridorx.Quoridorx(JEU['joueurs'], JEU['murs'])
+            JEUQUORIDOR.afficher()
+            coup = JEUQUORIDOR.jouer_coup(1)
+        except StopIteration:
+            if not JEUQUORIDOR.partie_terminée():
+                print(JEU['joueurs'][1]['nom'])
+            else:
+                print(JEUQUORIDOR.partie_terminée())
+            time.sleep(10)
+            break
 else:
     PARTIE = api.débuter_partie(IDUL)
     JEU = PARTIE[1]
