@@ -105,12 +105,22 @@ elif DIC['x']:
     while 1:
         try:
             TYPE_COUP = input('Type coup')
-            POS = input('position')
+            POS = (int(input('position en x')), int(input('position en y')))
             NETAT = api.jouer_coup(PARTIE[0], TYPE_COUP, POS)
             if 'joueurs' in NETAT:
-                JEU = NETAT
-                quoridorx.turtle.Screen().reset()
-                JEUQUORIDOR = quoridorx.Quoridorx(JEU['joueurs'], JEU['murs'])
+                if TYPE_COUP == 'MH':
+                    JEUQUORIDOR.placer_mur(1, POS, 'horizontaux')
+                elif TYPE_COUP == 'MV':
+                    JEUQUORIDOR.placer_mur(1, POS, 'verticaux')
+                elif TYPE_COUP == 'D':
+                    JEUQUORIDOR.déplacer_jeton(1, POS)
+                ÉTAT = JEUQUORIDOR.état_partie()
+                if len(ÉTAT['murs']['horizontaux']) != len(NETAT['murs']['horizontaux']):
+                    JEUQUORIDOR.placer_mur(2, NETAT['murs']['horizontaux'][-1], 'horizontaux')
+                elif len(ÉTAT['murs']['verticaux']) != len(NETAT['murs']['verticaux']):
+                    JEUQUORIDOR.placer_mur(2, NETAT['murs']['verticaux'][-1], 'verticaux')
+                elif ÉTAT['joueurs'][1]['pos'] != NETAT['joueurs'][1]['pos']:
+                    JEUQUORIDOR.déplacer_jeton(2, tuple(NETAT['joueurs'][1]['pos']))
                 JEUQUORIDOR.afficher()
             else:
                 print(NETAT)
@@ -132,9 +142,13 @@ elif DIC['ax']:
             TYPE_COUP = coup[0]
             POS = coup[1]
             NETAT = api.jouer_coup(PARTIE[0], TYPE_COUP, POS)
-            quoridorx.turtle.Screen().clear()
-            JEU = NETAT
-            JEUQUORIDOR = quoridorx.Quoridorx(JEU['joueurs'], JEU['murs'])
+            ÉTAT = JEUQUORIDOR.état_partie()
+            if len(ÉTAT['murs']['horizontaux']) != len(NETAT['murs']['horizontaux']):
+                JEUQUORIDOR.placer_mur(2, NETAT['murs']['horizontaux'][-1], 'horizontaux')
+            elif len(ÉTAT['murs']['verticaux']) != len(NETAT['murs']['verticaux']):
+                JEUQUORIDOR.placer_mur(2, NETAT['murs']['verticaux'][-1], 'verticaux')
+            elif ÉTAT['joueurs'][1]['pos'] != NETAT['joueurs'][1]['pos']:
+                JEUQUORIDOR.déplacer_jeton(2, tuple(NETAT['joueurs'][1]['pos']))
             JEUQUORIDOR.afficher()
             coup = JEUQUORIDOR.jouer_coup(1)
         except StopIteration:
