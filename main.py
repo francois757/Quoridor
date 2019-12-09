@@ -97,6 +97,7 @@ elif DIC['a']:
         JEUQUORIDOR = quoridorx.quoridor.Quoridor(JEU['joueurs'], JEU['murs'])
         print(JEUQUORIDOR)
         coup = JEUQUORIDOR.jouer_coup(1)
+        print(coup)
 elif DIC['x']:
     PARTIE = api.débuter_partie(IDUL)
     JEU = PARTIE[1]
