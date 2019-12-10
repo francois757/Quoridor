@@ -143,9 +143,6 @@ elif DIC['ax']:
             TYPE_COUP = coup[0]
             POS = coup[1]
             NETAT = api.jouer_coup(PARTIE[0], TYPE_COUP, POS)
-            quoridorx.turtle.Screen().clear()
-            JEU = NETAT
-            JEUQUORIDOR = quoridorx.Quoridorx(JEU['joueurs'], JEU['murs'])
             ÉTAT = JEUQUORIDOR.état_partie()
             if len(ÉTAT['murs']['horizontaux']) != len(NETAT['murs']['horizontaux']):
                 JEUQUORIDOR.placer_mur(2, NETAT['murs']['horizontaux'][-1], 'horizontaux')
@@ -160,7 +157,7 @@ elif DIC['ax']:
                 print(JEU['joueurs'][1]['nom'])
             else:
                 print(JEUQUORIDOR.partie_terminée())
-            time.sleep(10)
+            time.sleep(5)
             break
 else:
     PARTIE = api.débuter_partie(IDUL)
