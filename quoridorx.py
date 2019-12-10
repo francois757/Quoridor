@@ -1,9 +1,9 @@
 """Module qui créer la classe Quoridorx qui sert à jouer en mode graphique"""
 
-import quoridor
-
-
 import turtle
+
+
+import quoridor
 
 
 class Quoridorx(quoridor.Quoridor):
@@ -35,36 +35,39 @@ class Quoridorx(quoridor.Quoridor):
         self.afficher()
     def afficher(self):
         # placement joueurs
-        self.joueur1.goto(Quoridorx.scalingj(self, self.jeu['joueurs'][0]["pos"]))
-        self.joueur2.goto(Quoridorx.scalingj(self, self.jeu['joueurs'][1]["pos"]))
+        self.joueur1.goto(scalingj(self.jeu['joueurs'][0]["pos"]))
+        self.joueur2.goto(scalingj(self.jeu['joueurs'][1]["pos"]))
         # mur vertical
         self.dessins.pensize(6)
         self.dessins.pencolor("green")
         self.dessins.seth(90)
         for x in self.jeu["murs"]["verticaux"]:
             self.dessins.penup()
-            self.dessins.goto(Quoridorx.scalingm(self, x))
+            self.dessins.goto(scalingm(x))
             self.dessins.pendown()
             self.dessins.forward(100)
         # mur horizontal
         self.dessins.seth(0)
         for x in self.jeu["murs"]["horizontaux"]:
             self.dessins.penup()
-            self.dessins.goto(Quoridorx.scalingm(self, x))
+            self.dessins.goto(scalingm(x))
             self.dessins.pendown()
             self.dessins.forward(100)
     def dessin(self, depart, arrive):
+        """Méthode qui sert à déssiner le damier."""
         self.dessins.penup()
         self.dessins.goto(depart)
         self.dessins.pendown()
-        self.dessins.goto(arrive)    
-    def scalingj(self, pos):
-        a = ()
-        for x in pos:
-            a += (x * 50 - 250 ,)
-        return a   
-    def scalingm(self, pos):
-        a = ()
-        for x in pos:
-            a += (x * 50 - 275 ,)
-        return a
+        self.dessins.goto(arrive)
+def scalingj(pos):
+    """Fonction qui place les joueurs."""
+    a = ()
+    for x in pos:
+        a += (x * 50 - 250,)
+    return a
+def scalingm(pos):
+    """Fonction qui place les murs"""
+    a = ()
+    for x in pos:
+        a += (x * 50 - 275,)
+    return a

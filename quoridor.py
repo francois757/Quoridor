@@ -156,43 +156,43 @@ class Quoridor:
             if nx.shortest_path(graphe, pos2, f'B{joueur2}')[1][0] == pos2[0] - 1:
                 try:
                     résultat = self.placer_mur(joueur, tuple(map(sum,
-                                                        zip(pos2,
+                                                                 zip(pos2,
                                                             (0, -1 * (2 - joueur2))))),
-                                    'verticaux')
+                                               'verticaux')
                     return résultat
                 # Si on ne peut pas placer de mur à cet  endroit, on deplace notre pion
                 except QuoridorError:
                     try:
                         résultat = self.placer_mur(joueur, tuple(map(sum,
-                                                            zip(pos2,
+                                                                     zip(pos2,
                                                                 (0, 1 - joueur2)))), 'verticaux')
                         return résultat
                     except QuoridorError:
                         pass
-            else: 
+            else:
                 try:
                     résultat = self.placer_mur(joueur, tuple(map(sum,
-                                                        zip(pos2,
+                                                                 zip(pos2,
                                                             (0, joueur - 1)))), 'horizontaux')
                     return résultat
                 except QuoridorError:
-                        pass
+                    pass
         # Si shortest path est en y = murh
         if nx.shortest_path(graphe, pos2, f'B{joueur2}')[1][0] == pos2[0]:
             # Mur h devant le joueur si deplacement vers  l'objectif
             if nx.shortest_path(graphe, pos2, f'B{joueur2}')[1][1] == pos2[1] + 1:
                 try:
                     résultat = self.placer_mur(joueur, tuple(map(sum,
-                                                        zip(pos2,
+                                                                 zip(pos2,
                                                             (-1, joueur - 1)))), 'horizontaux')
                     return résultat
                 # mur h a gauche
                 except QuoridorError:
                     try:
                         résultat = self.placer_mur(joueur, tuple(map(sum,
-                                                            zip(pos2,
+                                                                     zip(pos2,
                                                                 (0, joueur - 1)))),
-                                        'horizontaux')
+                                                   'horizontaux')
                         return résultat
                     except QuoridorError:
                         pass
@@ -221,7 +221,8 @@ class Quoridor:
         if (len(nx.shortest_path(graphe, pos1, f'B{joueur}'))
                 <= len(nx.shortest_path(graphe, pos2, f'B{joueur2}'))):
             try:
-                résultat = self.déplacer_jeton(joueur, nx.shortest_path(graphe, pos1, f'B{joueur}')[1])
+                résultat = self.déplacer_jeton(joueur,
+                                               nx.shortest_path(graphe, pos1, f'B{joueur}')[1])
                 return résultat
             except QuoridorError:
                 raise QuoridorError('La partie est déjà terminée')

@@ -37,3 +37,4 @@ def jouer_coup(id_partie, type_coup, position):
             return dic['état']
         except RuntimeError:
             return dic['message']
+        return dic['état']
