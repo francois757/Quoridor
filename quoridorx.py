@@ -60,13 +60,13 @@ class Quoridorx(quoridor.Quoridor):
         self.dessins.pendown()
         self.dessins.goto(arrive)
 def scalingj(pos):
-    """Fonction qui place les joueurs."""
+    """Fonction qui adapte la position du joueur dans la fenêtre."""
     a = ()
     for x in pos:
         a += (x * 50 - 250,)
     return a
 def scalingm(pos):
-    """Fonction qui place les murs"""
+    """Fonction qui adapte la position du mur dans la fenêtre."""
     a = ()
     for x in pos:
         a += (x * 50 - 275,)
