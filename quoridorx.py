@@ -34,6 +34,7 @@ class Quoridorx(quoridor.Quoridor):
             Quoridorx.dessin(self, (225 - x*50, -225), (225 - x*50, 225))
         self.afficher()
     def afficher(self):
+        """Méthode qui affiche le damier de jeu sous forme graphique."""
         # placement joueurs
         self.joueur1.goto(scalingj(self.jeu['joueurs'][0]["pos"]))
         self.joueur2.goto(scalingj(self.jeu['joueurs'][1]["pos"]))

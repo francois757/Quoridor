@@ -157,7 +157,7 @@ class Quoridor:
                 try:
                     résultat = self.placer_mur(joueur, tuple(map(sum,
                                                                  zip(pos2,
-                                                            (0, -1 * (2 - joueur2))))),
+                                                                     (0, -1 * (2 - joueur2))))),
                                                'verticaux')
                     return résultat
                 # Si on ne peut pas placer de mur à cet  endroit, on deplace notre pion
@@ -165,7 +165,8 @@ class Quoridor:
                     try:
                         résultat = self.placer_mur(joueur, tuple(map(sum,
                                                                      zip(pos2,
-                                                                (0, 1 - joueur2)))), 'verticaux')
+                                                                         (0, 1 - joueur2)))),
+                                                'verticaux')
                         return résultat
                     except QuoridorError:
                         pass
@@ -173,7 +174,8 @@ class Quoridor:
                 try:
                     résultat = self.placer_mur(joueur, tuple(map(sum,
                                                                  zip(pos2,
-                                                            (0, joueur - 1)))), 'horizontaux')
+                                                                     (0, joueur - 1)))),
+                                                'horizontaux')
                     return résultat
                 except QuoridorError:
                     pass
@@ -184,14 +186,15 @@ class Quoridor:
                 try:
                     résultat = self.placer_mur(joueur, tuple(map(sum,
                                                                  zip(pos2,
-                                                            (-1, joueur - 1)))), 'horizontaux')
+                                                                     (-1, joueur - 1)))),
+                                                'horizontaux')
                     return résultat
                 # mur h a gauche
                 except QuoridorError:
                     try:
                         résultat = self.placer_mur(joueur, tuple(map(sum,
                                                                      zip(pos2,
-                                                                (0, joueur - 1)))),
+                                                                         (0, joueur - 1)))),
                                                    'horizontaux')
                         return résultat
                     except QuoridorError:
