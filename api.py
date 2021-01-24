@@ -1,7 +1,6 @@
 '''Module api'''
 import requests
 
-
 URL_BASE = 'https://python.gel.ulaval.ca/quoridor/api/'
 
 def lister_parties(idul):

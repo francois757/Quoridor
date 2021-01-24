@@ -50,6 +50,7 @@ class Quoridor:
             raise QuoridorError('Position invalide pour un joueur')
         self.jeu = jeu
         self.nom = [self.jeu['joueurs'][0]['nom'], self.jeu['joueurs'][1]['nom']]
+
     def __str__(self):
         """Méthode qui retourn l'état de jeu sous forme de damier ascii"""
         table = []
@@ -99,6 +100,7 @@ class Quoridor:
         damier += '\n' + '--|-----------------------------------'
         damier += '\n' + '  | 1   2   3   4   5   6   7   8   9'
         return damier
+
     def verifier_murs(self):
         """Méthode qui vérifie que la position des murs est valide"""
         mur = self.murs
@@ -124,6 +126,7 @@ class Quoridor:
             #for murh in mur['horizontaux']:
                 #if murh[0] == mv[0] + 1 and murh[1] == mv[1] - 1:
                     #raise QuoridorError('un mur occupe déjà cette position')
+
     def déplacer_jeton(self, joueur, position):
         """Méthode qui déplace le jeton"""
         # Le numero du joueur est autre que 1 ou 2.
@@ -145,9 +148,11 @@ class Quoridor:
             self.jeu["gagnant"] = self.jeu['joueurs'][1]["nom"]
         self.jeu['joueurs'][joueur - 1]["pos"] = position
         return ['D', position]
+
     def état_partie(self):
         """Méthode qui retourne l'état de jeu sous forme de dictionnaire"""
         return self.jeu
+
     def final_jouer_coup(self, joueur, joueur2, graphe, pos1, pos2):
         """Méthode qui exécute la fin de la méthode jouer_coup"""
         # Si on ne peut pas placer de mur on deplace
@@ -204,6 +209,7 @@ class Quoridor:
                     except QuoridorError:
                         pass
         return résultat
+
     def jouer_coup(self, joueur):
         """Méthode qui joue un coup automatique"""
         # Le numero du joueur est autre que 1 ou 2.
@@ -234,11 +240,13 @@ class Quoridor:
         # Si plus loin
         résultat = self.final_jouer_coup(joueur, joueur2, graphe, pos1, pos2)
         return résultat
+
     def partie_terminée(self):
         """Méthode qui vérifie si la partie est terminé"""
         if 'gagnant' in self.jeu:
             return self.jeu['gagnant']
         return False
+
     def verification_placer_mur(self, position, orientation, auorien):
         """Méthode qui vérifie que le mur qui est placé est placé dans une place libre"""
         for m in self.jeu['murs'][orientation]:
@@ -261,6 +269,7 @@ class Quoridor:
             if orientation == 'verticaux':
                 if position[0] == ma[0] + 1 and position[1] == ma[1] - 1:
                     raise QuoridorError('un mur occupe déjà cette position')
+
     def placer_mur(self, njoueur, position, orientation):
         """Méthode qui place un mur"""
         #Vérifie le numéro du joueur
@@ -296,6 +305,8 @@ class Quoridor:
                 self.jeu['murs'][orientation].pop()
                 raise QuoridorError('La position du mur est invalide')
         return [communication, position]
+
+
 def création_dictionnaire_joueur(joueurs, joueur, jeu):
     """Création des joueurs pour le dictionnaire de jeu et vérification
     du gagnant."""
@@ -310,6 +321,8 @@ def création_dictionnaire_joueur(joueurs, joueur, jeu):
                 jeu["gagnant"] = jou["nom"]
             if jou['pos'][1] == 1 and index5 == 1:
                 jeu["gagnant"] = jou["nom"]
+
+
 def construire_graphe(joueurs, murs_horizontaux, murs_verticaux):
     """
     Crée le graphe des déplacements admissibles pour les joueurs.
@@ -384,6 +397,8 @@ def construire_graphe(joueurs, murs_horizontaux, murs_verticaux):
         graphe.add_edge((x, 1), 'B2')
 
     return graphe
+
+
 def ajout_arcs(graphe, x, y):
     """Ajoute les arcs de tous les déplacements possibles pour une tuile"""
     if x > 1:

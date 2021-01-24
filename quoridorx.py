@@ -1,8 +1,5 @@
 """Module qui créer la classe Quoridorx qui sert à jouer en mode graphique"""
-
 import turtle
-
-
 import quoridor
 
 
@@ -33,6 +30,7 @@ class Quoridorx(quoridor.Quoridor):
         for x in range(1, 9):
             Quoridorx.dessin(self, (225 - x*50, -225), (225 - x*50, 225))
         self.afficher()
+
     def afficher(self):
         """Méthode qui affiche le damier de jeu sous forme graphique."""
         # placement joueurs
@@ -54,18 +52,23 @@ class Quoridorx(quoridor.Quoridor):
             self.dessins.goto(scalingm(x))
             self.dessins.pendown()
             self.dessins.forward(100)
+
     def dessin(self, depart, arrive):
         """Méthode qui sert à déssiner le damier."""
         self.dessins.penup()
         self.dessins.goto(depart)
         self.dessins.pendown()
         self.dessins.goto(arrive)
+
+
 def scalingj(pos):
     """Fonction qui adapte la position du joueur dans la fenêtre."""
     a = ()
     for x in pos:
         a += (x * 50 - 250,)
     return a
+
+
 def scalingm(pos):
     """Fonction qui adapte la position du mur dans la fenêtre."""
     a = ()
